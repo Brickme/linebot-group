@@ -80,7 +80,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				default:
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(" 你好 :"+message.Text+" OK!")).Do(); err != nil {
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(" Hello there :"+message.Text+" OK!")).Do(); err != nil {
 						log.Print(err)
 					}
 				}
@@ -90,7 +90,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			if event.Source.GroupID != "" {
 				if groupRes, err := bot.GetGroupSummary(event.Source.GroupID).Do(); err == nil {
 					if goupMemberResult, err := bot.GetGroupMemberCount(event.Source.GroupID).Do(); err == nil {
-						retString := fmt.Sprintf("感謝讓我加入這個群組，這個群組名稱是:%s, 總共有:%d 人\n", groupRes.GroupName, goupMemberResult.Count)
+						retString := fmt.Sprintf("Thanks for letting me join this group, the name of this group is: %s, there are: %d people in total\n", groupRes.GroupName, goupMemberResult.Count)
 						if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(retString), linebot.NewImageMessage(groupRes.PictureURL, groupRes.PictureURL)).Do(); err != nil {
 							//Reply fail.
 							log.Print(err)
@@ -106,7 +106,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			} else if event.Source.RoomID != "" {
 				// If join into a Room
 				if goupMemberResult, err := bot.GetRoomMemberCount(event.Source.RoomID).Do(); err == nil {
-					retString := fmt.Sprintf("感謝讓我加入這個聊天室，這個聊天室名總共有:%d 人\n", goupMemberResult.Count)
+					retString := fmt.Sprintf("Thanks for letting me join this chat room, the name of this chat room has: %d people\n", goupMemberResult.Count)
 					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(retString)).Do(); err != nil {
 						//Reply fail.
 						log.Print(err)
@@ -121,7 +121,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func sendUserProfile(user linebot.UserProfileResponse, event *linebot.Event) {
-	retString := fmt.Sprintf("使用者 %s 您好， 你的 ID 是 %s, 使用語言是 %s, 狀態為: %s\n", user.DisplayName, user.UserID, user.Language, user.StatusMessage)
+	retString := fmt.Sprintf("Hello user %s, your ID is %s, your language is %s, and your status is: %s\n", user.DisplayName, user.UserID, user.Language, user.StatusMessage)
 	if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(retString), linebot.NewImageMessage(user.PictureURL, user.PictureURL)).Do(); err != nil {
 		//Reply fail.
 		log.Print(err)
